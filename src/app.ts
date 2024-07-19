@@ -1,31 +1,49 @@
-import "dotenv/config";
-import express from "express";
-import session from "express-session";
-import passport from "passport";
-import authRoutes from "./routes/authRoutes";
+import "dotenv/config"
+import express from "express"
+import session from "express-session"
+import passport from "passport"
+import cors from "cors"
+import authRoutes from "./routes/authRoutes"
 
-const app = express();
+const app = express()
 
-app.use(express.json());
+const corsOptions = {
+  origin: "http://localhost:3000",
+  credentials: true,
+}
+
+app.use(cors(corsOptions))
+
+app.use(express.json())
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-  }),
-);
-app.use(passport.initialize());
-app.use(passport.session());
+    cookie: {
+      httpOnly: true,
+      secure: false, // pass to true in production
+      sameSite: "none",
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+    },
+  })
+)
+app.use(passport.initialize())
+app.use(passport.session())
 
 passport.serializeUser((user, done) => {
-  done(null, (user as any).id);
-});
+  done(null, (user as any).id)
+})
 
 passport.deserializeUser(async (id, done) => {
-  const user = await findUserById(id); // Assurez-vous que findUserById est défini dans src/models/user.ts
-  done(null, user);
-});
+  const user = await findUserById(id) // Assurez-vous que findUserById est défini dans src/models/user.ts
+  done(null, user)
+})
 
-app.use("/auth", authRoutes);
+app.use("/auth", authRoutes)
 
-export default app;
+app.get("/", (req, res) => {
+  res.send("Bienvenue sur l'API de myPlanning")
+})
+
+export default app

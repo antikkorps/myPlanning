@@ -3,6 +3,7 @@ import express from "express"
 import session from "express-session"
 import passport from "passport"
 import cors from "cors"
+import { userModel } from "../src/models"
 import authRoutes from "./routes/authRoutes"
 
 const app = express()
@@ -36,8 +37,12 @@ passport.serializeUser((user, done) => {
 })
 
 passport.deserializeUser(async (id, done) => {
-  const user = await findUserById(id) // Assurez-vous que findUserById est défini dans src/models/user.ts
-  done(null, user)
+  if (typeof id === "string") {
+    const user = await userModel.findUserById(id) // defined in src/models/user.ts
+    done(null, user)
+  } else {
+    done(new Error("User ID is not a string"), null)
+  }
 })
 
 app.use("/auth", authRoutes)

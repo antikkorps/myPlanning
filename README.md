@@ -13,6 +13,12 @@ This is a family management tool in order to ease life. You can create tasks, ad
 docker compose up -d
 ```
 
+if you encounter a port error on the compose up, you can use the following command
+
+```bash
+sudo systemctl restart docker
+```
+
 3. run
 
 ```bash

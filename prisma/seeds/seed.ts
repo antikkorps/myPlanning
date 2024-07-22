@@ -72,4 +72,5 @@ main()
   })
   .finally(async () => {
     await prisma.$disconnect()
+    console.log("Seeding des données effectué avec succès.")
   })

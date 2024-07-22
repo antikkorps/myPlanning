@@ -18,4 +18,76 @@ model User {
   email    String  @unique
   password String
   name     String?
+  avatar   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  familyId  Int?
+  family    Family?  @relation(fields: [familyId], references: [id])
+  events    Event[]
+  reminders Reminder[]
+  documents Document[]
+  subscription Subscription?
+}
+
+model Family {
+  id         Int      @id @default(autoincrement())
+  name       String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  members    User[]
+  events     Event[]
+  documents  Document[]
+}
+
+model Event {
+  id         Int      @id @default(autoincrement())
+  title      String
+  description String?
+  startDate  DateTime
+  endDate    DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  familyId   Int
+  family     Family   @relation(fields: [familyId], references: [id])
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id])
+}
+
+model Reminder {
+  id         Int      @id @default(autoincrement())
+  title      String
+  description String?
+  remindAt   DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id])
+}
+
+model Document {
+  id         Int      @id @default(autoincrement())
+  title      String
+  filePath   String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  userId     Int?
+  user       User?    @relation(fields: [userId], references: [id])
+  familyId   Int?
+  family     Family?  @relation(fields: [familyId], references: [id])
+}
+
+model Subscription {
+  id          Int      @id @default(autoincrement())
+  type        SubscriptionType
+  startDate   DateTime
+  endDate     DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userId      Int      @unique
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+enum SubscriptionType {
+  FREE
+  PAID
 }

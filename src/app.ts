@@ -17,7 +17,7 @@ app.use(cors(corsOptions))
 app.use(express.json())
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET as string,
     resave: false,
     saveUninitialized: false,
     cookie: {

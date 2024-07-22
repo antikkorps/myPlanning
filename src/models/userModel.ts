@@ -1,7 +1,14 @@
 import prisma from "../prisma/client"
 
 export const findUserByEmail = async (email: string) => {
-  return await prisma.user.findUnique({ where: { email } })
+  if (!email) {
+    throw new Error("Aucun email fourni")
+  }
+  return await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  })
 }
 
 export const findUserById = async (id: string) => {

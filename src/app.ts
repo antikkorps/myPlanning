@@ -16,11 +16,13 @@ const corsOptions = {
 app.use(cors(corsOptions))
 
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use(
   session({
     secret: process.env.SESSION_SECRET as string,
     resave: false,
     saveUninitialized: false,
+    name: "myPlanningCookie",
     cookie: {
       httpOnly: true,
       secure: false, // pass to true in production
@@ -45,7 +47,7 @@ passport.deserializeUser(async (id, done) => {
   }
 })
 
-app.use("/auth", authRoutes)
+app.use("/api/v1/auth", authRoutes)
 
 app.get("/", (req, res) => {
   res.send("Bienvenue sur l'API de myPlanning")

@@ -14,42 +14,48 @@ datasource db {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
+  id       String     @id @default(uuid())
   email    String  @unique
   password String
   name     String?
   avatar   String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  familyId  Int?
+  familyId  String?
   family    Family?  @relation(fields: [familyId], references: [id])
   events    Event[]
   reminders Reminder[]
   documents Document[]
   subscription Subscription?
+  isHead   Boolean  @default(false)
 }
 
 model Family {
-  id         Int      @id @default(autoincrement())
+  id         String      @id @default(uuid())
   name       String
+  address String?
+  city String?
+  postalCode String?
+  country String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   members    User[]
   events     Event[]
   documents  Document[]
+
 }
 
 model Event {
-  id         Int      @id @default(autoincrement())
+  id         String      @id @default(uuid())
   title      String
   description String?
   startDate  DateTime
   endDate    DateTime
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  familyId   Int
+  familyId   String
   family     Family   @relation(fields: [familyId], references: [id])
-  userId     Int
+  userId     String
   user       User     @relation(fields: [userId], references: [id])
 }
 
@@ -60,7 +66,7 @@ model Reminder {
   remindAt   DateTime
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  userId     Int
+  userId     String
   user       User     @relation(fields: [userId], references: [id])
 }
 
@@ -70,20 +76,20 @@ model Document {
   filePath   String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  userId     Int?
+  userId     String?
   user       User?    @relation(fields: [userId], references: [id])
-  familyId   Int?
+  familyId   String?
   family     Family?  @relation(fields: [familyId], references: [id])
 }
 
 model Subscription {
-  id          Int      @id @default(autoincrement())
+  id          String      @id @default(uuid())
   type        SubscriptionType
   startDate   DateTime
   endDate     DateTime?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  userId      Int      @unique
+  userId      String      @unique
   user        User     @relation(fields: [userId], references: [id])
 }
 

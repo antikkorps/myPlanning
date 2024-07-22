@@ -41,7 +41,7 @@ passport.deserializeUser(async (id, done) => {
     const user = await userModel.findUserById(id) // defined in src/models/user.ts
     done(null, user)
   } else {
-    done(new Error("User ID is not a string"), null)
+    done(new Error("User ID must be a string"), null)
   }
 })
 

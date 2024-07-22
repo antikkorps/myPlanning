@@ -1,19 +1,15 @@
-import { findUserByEmail, createUser } from "../models/user";
-import { hashPassword, comparePasswords } from "../utils/bcrypt";
+import { userModel } from "../models"
+import { hashPassword, comparePasswords } from "../utils/bcrypt"
 
-export const registerUser = async (
-  email: string,
-  password: string,
-  name: string,
-) => {
-  const hashedPassword = await hashPassword(password);
-  return await createUser(email, hashedPassword, name);
-};
+export const registerUser = async (email: string, password: string, name: string) => {
+  const hashedPassword = await hashPassword(password)
+  return await userModel.createUser(email, hashedPassword, name)
+}
 
 export const authenticateUser = async (email: string, password: string) => {
-  const user = await findUserByEmail(email);
+  const user = await userModel.findUserByEmail(email)
   if (user && (await comparePasswords(password, user.password))) {
-    return user;
+    return user
   }
-  return null;
-};
+  return null
+}

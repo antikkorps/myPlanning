@@ -22,7 +22,7 @@ app.use(
     secret: process.env.SESSION_SECRET as string,
     resave: false,
     saveUninitialized: false,
-    name: "myPlanningCookie",
+    name: process.env.SESSION_COOKIE_NAME,
     cookie: {
       httpOnly: true,
       secure: false, // pass to true in production

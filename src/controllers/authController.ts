@@ -8,7 +8,7 @@ export const register = async (req: Request, res: Response) => {
     const user = await registerUser(
       validatedData.email,
       validatedData.password,
-      validatedData.name
+      validatedData.name ?? ""
     )
     res.status(201).json(user)
   } catch (error) {

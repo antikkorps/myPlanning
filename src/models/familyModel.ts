@@ -4,8 +4,20 @@ export const createFamily = (name: string) => {
   return prisma.family.create({ data: { name } })
 }
 
-export const updateFamily = (name: string, familyId: string) => {
-  return prisma.family.update({ where: { id: familyId }, data: { name } })
+export const updateFamily = (
+  familyId: string,
+  updatedData: {
+    name?: string
+    address?: string
+    city?: string
+    postalCode?: string
+    country?: string
+  }
+) => {
+  return prisma.family.update({
+    where: { id: familyId },
+    data: updatedData,
+  })
 }
 
 export const findFamilyById = (familyId: string) => {

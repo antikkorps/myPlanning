@@ -4,8 +4,8 @@ export const createFamily = async (name: string) => {
   return await familyModel.createFamily(name)
 }
 
-export const updateFamily = async (name: string, familyId: string) => {
-  return await familyModel.updateFamily(name, familyId)
+export const updateFamily = async (familyId: string, updatedData: any) => {
+  return await familyModel.updateFamily(familyId, updatedData)
 }
 
 export const findFamilyById = async (familyId: string) => {

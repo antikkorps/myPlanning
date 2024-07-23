@@ -4,7 +4,7 @@ import session from "express-session"
 import passport from "passport"
 import cors from "cors"
 import { userModel } from "../src/models"
-import authRoutes from "./routes/authRoutes"
+import { authRoutes, familyRoutes } from "./routes"
 
 const app = express()
 
@@ -48,6 +48,7 @@ passport.deserializeUser(async (id, done) => {
 })
 
 app.use("/api/v1/auth", authRoutes)
+app.use("/api/v1/family", familyRoutes)
 
 app.get("/", (req, res) => {
   res.send("Bienvenue sur l'API de myPlanning")
